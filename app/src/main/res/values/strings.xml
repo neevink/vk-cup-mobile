@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">VK Cup Mobile</string>
+    <string name="title_activity_tinder_news">FullscreenActivity</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+
+    <integer name="com_vk_sdk_AppId">7902090</integer>
+</resources>
