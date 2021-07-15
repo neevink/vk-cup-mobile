@@ -4,26 +4,27 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.view.Gravity;
+import android.text.Html;
 import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.neevin.vkcupmobile.apimodels.VKNewsFeed;
-import com.neevin.vkcupmobile.apimodels.VKPost;
 import com.neevin.vkcupmobile.apirequests.VKNewsFeedRequest;
+import com.neevin.vkcupmobile.cards.CardAdapter;
+import com.neevin.vkcupmobile.cards.CardHandler;
 import com.vk.api.sdk.VK;
 import com.vk.api.sdk.VKApiCallback;
 import com.vk.api.sdk.auth.VKAccessToken;
 import com.vk.api.sdk.auth.VKAuthCallback;
 import com.vk.api.sdk.auth.VKScope;
-import com.vk.api.sdk.exceptions.VKApiExecutionException;
-import com.vk.api.sdk.requests.VKRequest;
+import com.wenchao.cardstack.CardStack;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
-import java.util.List;
 
 public class TinderNewsActivity extends AppCompatActivity {
 
@@ -37,17 +38,37 @@ public class TinderNewsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tinder_news);
 
-        // Тут делаем видимой кнопку "назад"
+        // Тут меняем заголовок Action
         ActionBar actionBar = getSupportActionBar();
+        actionBar.setBackgroundDrawable(new ColorDrawable(Color.WHITE));
+        actionBar.setTitle((Html.fromHtml("<font color=\"#000\" align=\"center\">Новости</font>")));
+
+        // Тут делаем видимой кнопку "назад"
         actionBar.setHomeButtonEnabled(true);
         actionBar.setDisplayHomeAsUpEnabled(true);
         // Тут ставим новый вид кнопки "назад"
         actionBar.setHomeAsUpIndicator(R.drawable.back_button);
 
-        // Тут меняем заголовок Action
-        actionBar.setTitle("Новости");
-
         VK.login(this, Arrays.asList(scope));
+
+        initImages();
+        cardStack = (CardStack) findViewById(R.id.card_stack);
+        cardStack.setContentResource(R.layout.card_layout);
+        cardStack.setStackMargin(20);
+        cardStack.setAdapter(cardAdapter);
+
+        cardStack.setListener(new CardHandler(getApplicationContext()));
+        getApplicationContext();
+    }
+
+    private CardStack cardStack;
+    private CardAdapter cardAdapter;
+
+    private void initImages(){
+        cardAdapter = new CardAdapter(getApplicationContext(), 0);
+        cardAdapter.add(R.drawable.pink_like);
+        cardAdapter.add(R.drawable.blue_dislike);
+
     }
 
     // Обработка авторизации

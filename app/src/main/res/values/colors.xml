@@ -3,6 +3,13 @@
     <color name="colorPrimary">#6200EE</color>
     <color name="colorPrimaryDark">#3700B3</color>
     <color name="colorAccent">#03DAC5</color>
-
     <color name="black_overlay">#66000000</color>
+
+    <color name="black">#000000</color>
+    <color name="white">#FFFFFF</color>
+    <color name="gray">#BCBCBC</color>
+    <color name="blue">#3F8AE0</color>
+    <color name="pink">#FF3347</color>
+    <color name="alpha">#00000000</color>
+    <color name="turquoise">#63B9BA</color>
 </resources>

@@ -32,4 +32,6 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 
     implementation 'com.vk:androidsdk:2.2.0'
+    implementation "com.yuyakaido.android:card-stack-view:+"
+    implementation 'com.github.wenchaojiang:AndroidSwipeableCardStack:+'
 }

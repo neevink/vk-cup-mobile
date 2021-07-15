@@ -4,10 +4,104 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".TinderNewsActivity">
+    tools:context=".TinderNewsActivity"
+    android:background="@drawable/gray_gradient">
 
 
+        <!-- Панель с кнопками лайк дизлайк -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            tools:ignore="MissingConstraints"
+            android:layout_marginTop="580dp"
+            android:paddingTop="580dp">
 
+            <!-- Кнопка дизлайка -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
+                <!-- Сама кнопка -->
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="40dp"
+                    android:layout_marginBottom="10dp">
+                    <ImageButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@color/alpha"
+                        android:src="@drawable/circle"
+                        tools:ignore="MissingConstraints" />
+                    <ImageView
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:layout_centerInParent="true"
+                        android:src="@drawable/blue_dislike"
+                        tools:ignore="MissingConstraints" />
+                </RelativeLayout>
+                <!-- Подпись под кнопкой -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Скрыть"
+                    android:textColor="@color/gray"
+                    android:layout_gravity="center"/>
+            </LinearLayout>
 
+            <!-- Кнопка лайка -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <!-- Сама кнопка -->
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="40dp"
+                    android:layout_marginBottom="10dp">
+                    <ImageButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@color/alpha"
+                        android:src="@drawable/circle"
+                        tools:ignore="MissingConstraints" />
+                    <ImageView
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:layout_centerInParent="true"
+                        android:src="@drawable/pink_like"
+                        tools:ignore="MissingConstraints" />
+                </RelativeLayout>
+                <!-- Подпись под кнопкой -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Нравится"
+                    android:textColor="@color/gray"
+                    android:layout_gravity="center"/>
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- Карточки -->
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            tools:ignore="MissingConstraints">
+
+            <com.wenchao.cardstack.CardStack
+                android:id="@+id/card_stack"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clipChildren="false"
+                android:clipToPadding="false"
+                android:paddingTop="40dp"
+                app:card_enable_rotation="true"
+                app:card_gravity="top"/>
+
+        </RelativeLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
