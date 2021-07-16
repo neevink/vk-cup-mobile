@@ -1,4 +1,4 @@
-package com.neevin.vkcupmobile.apimodels;
+package com.neevin.vkcupmobile.vkapi;
 
 import androidx.annotation.NonNull;
 

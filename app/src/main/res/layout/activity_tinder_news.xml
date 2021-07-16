@@ -36,6 +36,7 @@
                         android:src="@drawable/circle"
                         tools:ignore="MissingConstraints" />
                     <ImageView
+                        android:onClick="dislikeButtonHandler"
                         android:layout_width="48dp"
                         android:layout_height="48dp"
                         android:layout_centerInParent="true"
@@ -70,6 +71,7 @@
                         android:src="@drawable/circle"
                         tools:ignore="MissingConstraints" />
                     <ImageView
+                        android:onClick="likeButtonHandler"
                         android:layout_width="48dp"
                         android:layout_height="48dp"
                         android:layout_centerInParent="true"
@@ -101,7 +103,7 @@
                 android:clipToPadding="false"
                 android:paddingTop="40dp"
                 app:card_enable_rotation="true"
-                app:card_gravity="top"/>
+                app:card_stack_size="3"/>
 
         </RelativeLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

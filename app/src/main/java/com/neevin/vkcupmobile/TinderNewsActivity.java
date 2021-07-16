@@ -9,12 +9,14 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.text.Html;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
-import com.neevin.vkcupmobile.apimodels.VKNewsFeed;
-import com.neevin.vkcupmobile.apirequests.VKNewsFeedRequest;
+import com.neevin.vkcupmobile.vkapi.VKNewsFeed;
+import com.neevin.vkcupmobile.vkapi.VKNewsFeedRequest;
 import com.neevin.vkcupmobile.cards.CardAdapter;
-import com.neevin.vkcupmobile.cards.CardHandler;
+import com.neevin.vkcupmobile.cards.CardDragHandler;
+import com.neevin.vkcupmobile.vkapi.VKPost;
 import com.vk.api.sdk.VK;
 import com.vk.api.sdk.VKApiCallback;
 import com.vk.api.sdk.auth.VKAccessToken;
@@ -25,6 +27,7 @@ import com.wenchao.cardstack.CardStack;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
+import java.util.List;
 
 public class TinderNewsActivity extends AppCompatActivity {
 
@@ -57,8 +60,15 @@ public class TinderNewsActivity extends AppCompatActivity {
         cardStack.setStackMargin(20);
         cardStack.setAdapter(cardAdapter);
 
-        cardStack.setListener(new CardHandler(getApplicationContext()));
-        getApplicationContext();
+        cardStack.setListener(new CardDragHandler(getApplicationContext()));
+    }
+
+    public void likeButtonHandler(View view) {
+        cardStack.discardTop(1);
+    }
+
+    public void dislikeButtonHandler(View view) {
+        cardStack.discardTop(0);
     }
 
     private CardStack cardStack;
@@ -66,9 +76,15 @@ public class TinderNewsActivity extends AppCompatActivity {
 
     private void initImages(){
         cardAdapter = new CardAdapter(getApplicationContext(), 0);
-        cardAdapter.add(R.drawable.pink_like);
-        cardAdapter.add(R.drawable.blue_dislike);
-
+        VKPost p = new VKPost("Текст тестового поста",
+                null,
+                "Тестовое название группы",
+                "только что",
+                null,
+                0,
+                0,
+                0);
+        cardAdapter.add(p);
     }
 
     // Обработка авторизации
@@ -84,6 +100,11 @@ public class TinderNewsActivity extends AppCompatActivity {
                     @Override
                     public void success(VKNewsFeed result) {
                         System.out.println(result);
+                        List<VKPost> posts = result.posts;
+
+                        for(int i = 0; i < posts.size(); i++){
+                            cardAdapter.add(posts.get(i));
+                        }
                     }
 
                     @Override

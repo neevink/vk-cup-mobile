@@ -7,10 +7,10 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.wenchao.cardstack.CardStack;
 
-public class CardHandler implements CardStack.CardEventListener {
+public class CardDragHandler implements CardStack.CardEventListener {
     private Context context;
 
-    public CardHandler(Context context){
+    public CardDragHandler(Context context){
         this.context = context;
     }
 
