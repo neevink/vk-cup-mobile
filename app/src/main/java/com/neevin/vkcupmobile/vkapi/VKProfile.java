@@ -1,5 +1,7 @@
 package com.neevin.vkcupmobile.vkapi;
 
+import androidx.annotation.NonNull;
+
 // Профиль группы/человека во ВКонтакте
 public class VKProfile {
     public final long id;
@@ -11,5 +13,11 @@ public class VKProfile {
         this.id = id;
         this.name = name;
         this.photoURL = photoURL;
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
+        return String.format("{%d, %s, %s}", id, name, photoURL);
     }
 }

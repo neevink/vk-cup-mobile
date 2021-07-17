@@ -3,6 +3,7 @@ package com.neevin.vkcupmobile.cards;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -20,6 +21,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 public class CardAdapter extends ArrayAdapter<VKPost> {
+
     public CardAdapter(@NonNull Context context, int resource) {
         super(context, resource);
     }
@@ -35,6 +37,12 @@ public class CardAdapter extends ArrayAdapter<VKPost> {
         ImageView postImage = (ImageView) convertView.findViewById(R.id.post_image);
         TextView postText = (TextView) convertView.findViewById(R.id.post_text);
 
+        if(post.postImage == null) {
+            postImage.setVisibility(View.GONE);
+        }
+        else {
+                postImage.setVisibility(View.VISIBLE);
+        }
 
         profilePhoto.setImageBitmap(post.profilePhoto);
         profileName.setText(post.profileName);

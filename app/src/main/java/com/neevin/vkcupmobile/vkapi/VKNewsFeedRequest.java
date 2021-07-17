@@ -3,6 +3,7 @@ package com.neevin.vkcupmobile.vkapi;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
+import com.neevin.vkcupmobile.cards.LovelyTimeCreator;
 import com.vk.api.sdk.requests.VKRequest;
 
 import org.json.JSONArray;
@@ -12,6 +13,7 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -24,7 +26,8 @@ public class VKNewsFeedRequest extends VKRequest<VKNewsFeed> {
         // Получть только посты
         addParam("filters", "post");
         // Вернуть всего одну фотку
-        // addParam("max_photos", "1");
+        addParam("max_photos", "1");
+        addParam("count", "10");
         /*
         start_from - Идентификатор, необходимый для получения следующей страницы результатов.
         Значение, необходимое для передачи в этом параметре, возвращается в поле ответа next_from.
@@ -47,18 +50,51 @@ public class VKNewsFeedRequest extends VKRequest<VKNewsFeed> {
             JSONArray items = response.getJSONArray("items");
             String nextFrom = response.getString("next_from");
 
-            JSONArray profiles = response.getJSONArray("profiles");
-            JSONArray groups = response.getJSONArray("groups");
+
+            HashMap<Long, VKProfile> dict = new HashMap<Long, VKProfile>();
+
+            if(response.has("profiles")){
+                JSONArray profiles = response.getJSONArray("profiles");
+
+                for(int i = 0; i < profiles.length(); i++){
+                    JSONObject prof = profiles.getJSONObject(i);
+
+                    long id = prof.getLong("id");
+                    String name = cutString(prof.getString("first_name") + " " + prof.getString("last_name"), 26);
+                    String profileURL = prof.getString("photo_50");
+
+                    dict.put(id, new VKProfile(id, name, profileURL));
+                }
+            }
+
+            if(response.has("groups")){
+                JSONArray groups = response.getJSONArray("groups");
+
+                for(int i = 0; i < groups.length(); i++){
+                    JSONObject prof = groups.getJSONObject(i);
+
+                    // id групп передаются с минусом - это прикол ВК)))
+                    long id = - prof.getLong("id");
+
+                    String name = cutString(prof.getString("name"), 26);
+
+                    String profileURL = prof.getString("photo_50");
+
+                    //System.out.println(new VKProfile(id, name, profileURL));
+                    dict.put(id, new VKProfile(id, name, profileURL));
+                }
+            }
 
             List<VKPost> news = new LinkedList<VKPost>();
             for(int i = 0; i < items.length(); i++){
                 JSONObject post = items.getJSONObject(i);
                 String text = post.getString("text");
 
-                // Ещё нужно зазвание и аватарка группы/страницы с которой опубликована запись
-                // и время публикации
+                VKProfile author = dict.get(post.getLong("source_id"));
 
-                // Выяснилось, что вместо того, чтобы передовать пустой список attachments VK API
+                Bitmap profilePhoto = loadByURL(author.photoURL);
+
+                // Выяснилось, что вместо того, чтобы передовать пустой список attachments, VK API
                 // просто убирает это поле
                 if(!post.has("attachments"))
                     continue;
@@ -73,21 +109,15 @@ public class VKNewsFeedRequest extends VKRequest<VKNewsFeed> {
                     postImage = loadByURL(photoURL);
                 }
 
+                long date = post.getLong("date");
+                String publishTime = LovelyTimeCreator.getLovelyTime(date);
 
-                /*
-                Чтобы получить изображения и названия профелей/групп, нужно спарсить
-                поля profiles - JSONArray
-                и groups - JSONArray
-
-
-
-                 */
-
-                String profileName = "Название профиля";
-
-
-                int date = post.getInt("date");
-                String publishTime = "" + date;
+                if(postImage == null){
+                    text = cutString(text.replace("\n", " "), 400);
+                }
+                else{
+                    text = cutString(text.replace("\n", " "), 200);
+                }
 
                 int commentsCount = post.getJSONObject("comments").getInt("count");
                 int likesCount = post.getJSONObject("likes").getInt("count");
@@ -96,9 +126,9 @@ public class VKNewsFeedRequest extends VKRequest<VKNewsFeed> {
                         new VKPost(
                                 text,
                                 postImage,
-                                profileName,
+                                author.name,
                                 publishTime,
-                                null, // profilePhoto
+                                profilePhoto,
                                 commentsCount,
                                 likesCount,
                                 repostsCount
@@ -123,8 +153,8 @@ public class VKNewsFeedRequest extends VKRequest<VKNewsFeed> {
                 if(element.getString("type").equals("photo")){
                     JSONArray photoSizes = element.getJSONObject("photo").getJSONArray("sizes");
 
-                    // Берём url фотки с лучшим качеством :)
-                    String url = photoSizes.getJSONObject(photoSizes.length()-1).getString("url");
+                    // Берём url фотки со средним качеством :)
+                    String url = photoSizes.getJSONObject(photoSizes.length()/2).getString("url");
                     return url;
                 }
             }
@@ -149,5 +179,12 @@ public class VKNewsFeedRequest extends VKRequest<VKNewsFeed> {
             throw exc;
         }
         //return null;
+    }
+
+    private String cutString(String string, int len){
+        if(string.length() > len){
+            return string.substring(0, len - 3) + "...";
+        }
+        return string;
     }
 }
