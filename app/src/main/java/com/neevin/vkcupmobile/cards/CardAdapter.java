@@ -1,9 +1,6 @@
 package com.neevin.vkcupmobile.cards;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -16,11 +13,8 @@ import androidx.annotation.Nullable;
 import com.neevin.vkcupmobile.R;
 import com.neevin.vkcupmobile.vkapi.VKPost;
 
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
-
 public class CardAdapter extends ArrayAdapter<VKPost> {
+    public int lastIndex = 0;
 
     public CardAdapter(@NonNull Context context, int resource) {
         super(context, resource);
@@ -41,7 +35,7 @@ public class CardAdapter extends ArrayAdapter<VKPost> {
             postImage.setVisibility(View.GONE);
         }
         else {
-                postImage.setVisibility(View.VISIBLE);
+            postImage.setVisibility(View.VISIBLE);
         }
 
         profilePhoto.setImageBitmap(post.profilePhoto);
@@ -49,9 +43,6 @@ public class CardAdapter extends ArrayAdapter<VKPost> {
         publishTime.setText(post.publishTime);
         postImage.setImageBitmap(post.postImage);
         postText.setText(post.text);
-
-
-        //imageView.setImageResource(getItem(position));
 
         return convertView;
     }

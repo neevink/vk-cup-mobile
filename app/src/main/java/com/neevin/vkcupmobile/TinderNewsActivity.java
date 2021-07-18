@@ -1,6 +1,7 @@
 package com.neevin.vkcupmobile;
 
 import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -10,7 +11,6 @@ import android.os.Bundle;
 import android.text.Html;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 
 import com.neevin.vkcupmobile.vkapi.VKNewsFeed;
 import com.neevin.vkcupmobile.vkapi.VKNewsFeedRequest;
@@ -30,7 +30,10 @@ import java.util.Arrays;
 import java.util.List;
 
 public class TinderNewsActivity extends AppCompatActivity {
+    private CardStack cardStack;
+    private CardAdapter cardAdapter;
 
+    // Разрешения, которые нужны приложению
     private VKScope[] scope = new VKScope[]{
             VKScope.WALL,
             VKScope.FRIENDS,
@@ -52,15 +55,34 @@ public class TinderNewsActivity extends AppCompatActivity {
         // Тут ставим новый вид кнопки "назад"
         actionBar.setHomeAsUpIndicator(R.drawable.back_button);
 
-        VK.login(this, Arrays.asList(scope));
-
-        initImages();
+        cardAdapter = new CardAdapter(getApplicationContext(), 0);
         cardStack = (CardStack) findViewById(R.id.card_stack);
         cardStack.setContentResource(R.layout.card_layout);
         cardStack.setStackMargin(20);
         cardStack.setAdapter(cardAdapter);
 
-        cardStack.setListener(new CardDragHandler(getApplicationContext()));
+        cardStack.setListener(new CardDragHandler(getApplicationContext(), cardAdapter));
+
+        if(!VK.isLoggedIn()){
+            VK.login(this, Arrays.asList(scope));
+        }
+
+        Thread t = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while (true){
+                    System.out.println("cardAdapter.getCount = " + cardAdapter.getCount());
+                    // Из cardAdapter не удаляются элементы
+                    if(VK.isLoggedIn() && cardAdapter.getCount() - cardAdapter.lastIndex + 1 <= 30 && canSend){
+                        pullNewPosts(10);
+                    }
+                    try {
+                        Thread.sleep(3000);
+                    } catch (InterruptedException e) {}
+                }
+            }
+        });
+        t.start();
     }
 
     public void likeButtonHandler(View view) {
@@ -71,22 +93,6 @@ public class TinderNewsActivity extends AppCompatActivity {
         cardStack.discardTop(0);
     }
 
-    private CardStack cardStack;
-    private CardAdapter cardAdapter;
-
-    private void initImages(){
-        cardAdapter = new CardAdapter(getApplicationContext(), 0);
-        VKPost p = new VKPost("Текст тестового поста",
-                null,
-                "Тестовое название группы",
-                "только что",
-                null,
-                0,
-                0,
-                0);
-        cardAdapter.add(p);
-    }
-
     // Обработка авторизации
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -94,36 +100,48 @@ public class TinderNewsActivity extends AppCompatActivity {
             @Override
             public void onLogin(VKAccessToken token) {
                 // User passed authorization
-                Toast.makeText(getApplicationContext(), "OK", Toast.LENGTH_LONG).show();
-
-                VK.execute(new VKNewsFeedRequest(), new VKApiCallback<VKNewsFeed>() {
-                    @Override
-                    public void success(VKNewsFeed result) {
-                        System.out.println(result);
-                        List<VKPost> posts = result.posts;
-
-                        for(int i = 0; i < posts.size(); i++){
-                            cardAdapter.add(posts.get(i));
-                        }
-                    }
-
-                    @Override
-                    public void fail(@NotNull Exception e) {
-                        e.printStackTrace();
-                    }
-                });
             }
 
             @Override
             public void onLoginFailed(int errorCode) {
                 // User didn't pass authorization
-                Toast.makeText(getApplicationContext(), "Error", Toast.LENGTH_LONG).show();
+                AlertDialog alertDialog = new AlertDialog.Builder(TinderNewsActivity.this).create();
+                alertDialog.setTitle("Ошибка входа");
+                alertDialog.setMessage("Чтобы получить ленту новостей, обязательно нужно войти в аккаунт.");
+                alertDialog.show();
             }
         };
 
         if (data == null || !VK.onActivityResult(requestCode, resultCode, data, callback)) {
             super.onActivityResult(requestCode, resultCode, data);
         }
+
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    private String startFrom = null;
+
+    // Квота на количество запросав одновременно
+    private boolean canSend = true;
+
+    private void pullNewPosts(int postsCount){
+
+        canSend = false;
+        VK.execute(new VKNewsFeedRequest(postsCount, startFrom), new VKApiCallback<VKNewsFeed>() {
+            @Override
+            public void success(VKNewsFeed result) {
+                canSend = true;
+                List<VKPost> posts = result.posts;
+                startFrom = result.nextFrom;
+                cardAdapter.addAll(posts);
+            }
+
+            @Override
+            public void fail(@NotNull Exception e) {
+                canSend = true;
+                e.printStackTrace();
+            }
+        });
     }
 
     @Override

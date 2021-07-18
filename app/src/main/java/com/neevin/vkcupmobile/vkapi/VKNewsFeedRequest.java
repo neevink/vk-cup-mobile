@@ -20,31 +20,23 @@ import java.util.List;
 
 public class VKNewsFeedRequest extends VKRequest<VKNewsFeed> {
 
-    public VKNewsFeedRequest() {
+    public VKNewsFeedRequest(int postsCount, String startFrom) {
         super("newsfeed.get");
 
         // Получть только посты
         addParam("filters", "post");
         // Вернуть всего одну фотку
         addParam("max_photos", "1");
-        addParam("count", "10");
-        /*
-        start_from - Идентификатор, необходимый для получения следующей страницы результатов.
-        Значение, необходимое для передачи в этом параметре, возвращается в поле ответа next_from.
+        addParam("count", postsCount);
 
-        count - указывает, какое максимальное число новостей следует возвращать, но не более 100.
-        По умолчанию 50.
-         */
-
-        // Нужно как-то картинку получать в высоком разрешении
-
+        if(startFrom != null){
+            addParam("start_from", startFrom);
+        }
     }
 
     @Override
     public VKNewsFeed parse(JSONObject json) throws JSONException, IOException {
         try{
-            System.out.println(json.toString());
-
             JSONObject response = json.getJSONObject("response");
 
             JSONArray items = response.getJSONArray("items");
@@ -80,7 +72,6 @@ public class VKNewsFeedRequest extends VKRequest<VKNewsFeed> {
 
                     String profileURL = prof.getString("photo_50");
 
-                    //System.out.println(new VKProfile(id, name, profileURL));
                     dict.put(id, new VKProfile(id, name, profileURL));
                 }
             }
@@ -100,7 +91,6 @@ public class VKNewsFeedRequest extends VKRequest<VKNewsFeed> {
                     continue;
 
                 JSONArray arr = post.getJSONArray("attachments");
-                System.out.println(arr.toString());
 
                 String photoURL = firstPhotoURLFromAttachments(post.getJSONArray("attachments"));
 
@@ -153,8 +143,8 @@ public class VKNewsFeedRequest extends VKRequest<VKNewsFeed> {
                 if(element.getString("type").equals("photo")){
                     JSONArray photoSizes = element.getJSONObject("photo").getJSONArray("sizes");
 
-                    // Берём url фотки со средним качеством :)
-                    String url = photoSizes.getJSONObject(photoSizes.length()/2).getString("url");
+                    // Берём url фотки с каким-то качеством :)
+                    String url = photoSizes.getJSONObject(photoSizes.length()*3/4).getString("url");
                     return url;
                 }
             }

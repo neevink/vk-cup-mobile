@@ -16,7 +16,6 @@
             android:layout_height="450dp"
             android:layout_margin="20dp"
             android:background="@drawable/card"
-            android:scaleType="centerCrop"
             tools:ignore="MissingConstraints"/>
 
         <ImageView
@@ -70,7 +69,7 @@
                 android:id="@+id/post_image"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
-                android:scaleType="centerCrop"
+                android:scaleType="fitCenter"
                 android:src="@drawable/sample"/>
 
             <TextView

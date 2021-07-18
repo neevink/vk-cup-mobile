@@ -3,20 +3,21 @@ package com.neevin.vkcupmobile.cards;
 import android.content.Context;
 import android.widget.Toast;
 
-import androidx.constraintlayout.widget.ConstraintLayout;
-
 import com.wenchao.cardstack.CardStack;
 
 public class CardDragHandler implements CardStack.CardEventListener {
     private Context context;
+    private CardAdapter cardAdapter;
+    private int DISTANCE = 200;
 
-    public CardDragHandler(Context context){
+    public CardDragHandler(Context context, CardAdapter cardAdapter){
         this.context = context;
+        this.cardAdapter = cardAdapter;
     }
 
     @Override
     public boolean swipeEnd(int section, float distance) {
-        if(distance > 250){
+        if(distance > DISTANCE){
             if(section == 0 || section == 2){
                 Toast.makeText(context, "dislike", Toast.LENGTH_LONG).show();
             }
@@ -40,7 +41,7 @@ public class CardDragHandler implements CardStack.CardEventListener {
 
     @Override
     public void discarded(int mIndex, int direction) {
-
+        cardAdapter.lastIndex = mIndex;
     }
 
     @Override
