@@ -144,7 +144,7 @@ public class VKNewsFeedRequest extends VKRequest<VKNewsFeed> {
                     JSONArray photoSizes = element.getJSONObject("photo").getJSONArray("sizes");
 
                     // Берём url фотки с каким-то качеством :)
-                    String url = photoSizes.getJSONObject(photoSizes.length()*3/4).getString("url");
+                    String url = photoSizes.getJSONObject(photoSizes.length()-1).getString("url");
                     return url;
                 }
             }

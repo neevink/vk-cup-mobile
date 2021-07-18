@@ -1,7 +1,6 @@
 package com.neevin.vkcupmobile.cards;
 
 import android.content.Context;
-import android.widget.Toast;
 
 import com.wenchao.cardstack.CardStack;
 
@@ -19,10 +18,10 @@ public class CardDragHandler implements CardStack.CardEventListener {
     public boolean swipeEnd(int section, float distance) {
         if(distance > DISTANCE){
             if(section == 0 || section == 2){
-                Toast.makeText(context, "dislike", Toast.LENGTH_LONG).show();
+                //Toast.makeText(context, "dislike", Toast.LENGTH_LONG).show();
             }
             else{
-                Toast.makeText(context, "like", Toast.LENGTH_LONG).show();
+                //Toast.makeText(context, "like", Toast.LENGTH_LONG).show();
             }
             return true;
         }

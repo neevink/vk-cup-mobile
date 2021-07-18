@@ -1,10 +1,5 @@
 package com.neevin.vkcupmobile.cards;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-
 public class LovelyCountCreator {
 
     // Вернуть количество в виде строки в красивом формате
