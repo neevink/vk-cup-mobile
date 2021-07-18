@@ -12,15 +12,21 @@
         android:orientation="vertical"
         android:gravity="center">
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:textAlignment="center"
+            android:layout_marginBottom="40dp"
+            android:paddingHorizontal="20dp"
+            android:text="Это выполненное задание для отборочного этапа VK Cup 2021 в треке Mobile\nВыглядит страншно, но я старался :)\n\nВыполнил: Неевин Кирилл"/>
+
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Тиндер-новости"
+            android:text="2. Тиндер-новости"
             android:onClick="openTinderNews"></Button>
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Другая кнопка"></Button>
+
 
     </LinearLayout>
 

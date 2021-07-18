@@ -103,7 +103,7 @@ public class VKNewsFeedRequest extends VKRequest<VKNewsFeed> {
                 String publishTime = LovelyTimeCreator.getLovelyTime(date);
 
                 if(postImage == null){
-                    text = cutString(text.replace("\n", " "), 400);
+                    text = cutString(text.replace("\n", " "), 500);
                 }
                 else{
                     text = cutString(text.replace("\n", " "), 200);

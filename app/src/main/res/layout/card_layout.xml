@@ -69,7 +69,7 @@
                 android:id="@+id/post_image"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
-                android:scaleType="fitCenter"
+                android:scaleType="center"
                 android:src="@drawable/sample"/>
 
             <TextView
@@ -87,25 +87,51 @@
             android:layout_width="22dp"
             android:layout_height="22dp"
             android:layout_marginLeft="35dp"
-            android:layout_marginTop="415dp"
+            android:layout_marginTop="425dp"
             android:alpha="0.7"
             android:src="@drawable/gray_likes" />
+        <TextView
+            android:id="@+id/likes_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/gray"
+            android:layout_marginLeft="60dp"
+            android:layout_marginTop="425dp"
+            android:text="1234"/>
 
+        <!-- Количество комментариев -->
         <ImageView
             android:layout_width="22dp"
             android:layout_height="22dp"
-            android:layout_marginLeft="95dp"
-            android:layout_marginTop="415dp"
+            android:layout_marginLeft="105dp"
+            android:layout_marginTop="425dp"
             android:alpha="0.7"
             android:src="@drawable/gray_comments" />
+        <TextView
+            android:id="@+id/comments_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/gray"
+            android:layout_marginLeft="130dp"
+            android:layout_marginTop="425dp"
+            android:text="1234"/>
 
+        <!-- Количество репостов -->
         <ImageView
             android:layout_width="22dp"
             android:layout_height="22dp"
-            android:layout_marginLeft="155dp"
-            android:layout_marginTop="415dp"
+            android:layout_marginLeft="175dp"
+            android:layout_marginTop="425dp"
             android:alpha="0.7"
             android:src="@drawable/gray_reposts" />
+        <TextView
+            android:id="@+id/reposts_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/gray"
+            android:layout_marginLeft="200dp"
+            android:layout_marginTop="425dp"
+            android:text="1234"/>
 
     </RelativeLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

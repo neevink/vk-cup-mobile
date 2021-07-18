@@ -31,6 +31,10 @@ public class CardAdapter extends ArrayAdapter<VKPost> {
         ImageView postImage = (ImageView) convertView.findViewById(R.id.post_image);
         TextView postText = (TextView) convertView.findViewById(R.id.post_text);
 
+        TextView likesText = (TextView) convertView.findViewById(R.id.likes_count);
+        TextView commentsText = (TextView) convertView.findViewById(R.id.comments_count);
+        TextView repostsText = (TextView) convertView.findViewById(R.id.reposts_count);
+
         if(post.postImage == null) {
             postImage.setVisibility(View.GONE);
         }
@@ -43,6 +47,10 @@ public class CardAdapter extends ArrayAdapter<VKPost> {
         publishTime.setText(post.publishTime);
         postImage.setImageBitmap(post.postImage);
         postText.setText(post.text);
+
+        likesText.setText(LovelyCountCreator.getLovelyCount(post.likesCount));
+        commentsText.setText(LovelyCountCreator.getLovelyCount(post.commentsCount));
+        repostsText.setText(LovelyCountCreator.getLovelyCount(post.repostsCount));
 
         return convertView;
     }
