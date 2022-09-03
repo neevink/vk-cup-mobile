@@ -1,6 +1,8 @@
-## Тиндер-новости ВКонтакте
+## Tinder-news VK
 
-Выполненное задание для VK Cup 2021 в треке Mobile - тиндер-новости ВКонтакте (Android Java)
-<br/>
-Демонстрация работы приложения:
-[ссылка на видео](https://www.youtube.com/watch?v=12r-yDgGqAA)
+New news feed for social network VK on Android.
+You can now like posts by swiping the screen, just like on Tinder.
+
+<img src="./docs/screenshot.png"/>
+
+Video demonstration: [click to watch](https://www.youtube.com/watch?v=12r-yDgGqAA)
